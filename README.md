@@ -54,19 +54,33 @@ Built using **Node.js, Express, MongoDB, and EJS**, the platform supports **user
 major_project/
 │
 ├── app.js # Main application file
+
 ├── controllers/ # Route handlers
+
 ├── models/ # Mongoose schemas
+
 ├── routes/ # Express routes
+
 ├── views/ # EJS templates
+
 ├── public/ # Static assets (CSS, JS, images)
+
 ├── utils/ # Utility/helper functions
+
 ├── init/ # Database initialization scripts
+
 ├── middleware.js # Custom middleware
+
 ├── cloudConfig.js # Cloudinary configuration
+
 ├── schema.js # Joi validation schemas
+
 ├── package.json
+
 ├── .env # Environment variables (not committed)
+
 ├── .gitignore
+
 └── README.md
 
 
