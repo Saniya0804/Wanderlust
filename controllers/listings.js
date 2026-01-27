@@ -23,13 +23,15 @@ res.render("listings/show",{listing});
 }
 
 module.exports.createListing=async(req,res,next)=>{
-    let url=req.file.path;
-    let filename=req.file.filename;
-    console.log(url, "..",filename)
   const newlist=new Listing(req.body.listing);
   //stores id of current user
  newlist.owner=req.user._id;
- newlist.image={url,filename};
+ if(req.file){
+    let url=req.file.path;
+    let filename=req.file.filename;
+    console.log(url, "..",filename)
+    newlist.image={url,filename};
+ }
 await newlist.save();
 req.flash("success","new listings created");
 res.redirect("/listings");
@@ -51,13 +53,18 @@ originalImageUrl=originalImageUrl.replace("/upload/","/upload/w_250/");
 }
 module.exports.updateListing=async (req,res)=>{
    let {id}=req.params;
-    let listing=await Listing.findByIdAndUpdate(id,req.body.listing);
-    if(typeof req.file!="undefined"){
+    let listing=await Listing.findById(id);
+    if(!listing){
+        req.flash("error","Listing not found!");
+        return res.redirect("/listings");
+    }
+    Object.assign(listing, req.body.listing);
+    if(req.file){
     let url=req.file.path;
     let filename=req.file.filename;
     listing.image={url,filename};
-    await listing.save();
     }
+    await listing.save();
     req.flash("success","Listing Updated!");
     res.redirect("/listings");
 }
