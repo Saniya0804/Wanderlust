@@ -38,9 +38,6 @@ app.use(methodOverride("_method"));
 app.use(express.static(path.join(__dirname,"/public")));
 const store=MongoStore.create({
     mongoUrl:dburl,
-    crypto:{
-secret:process.env.SESSION_SECRET
-    },
     touchAfter:24*60*60
 });
 store.on("error",(err)=>{
@@ -72,7 +69,7 @@ passport.deserializeUser(User.deserializeUser());
 app.use((req,res,next)=>{
 res.locals.success=req.flash("success")||[];
 res.locals.error=req.flash("error")||[];
-res.locals.currUser=req.user;
+res.locals.currUser=req.user||null;
 next();
 });
 
@@ -84,9 +81,9 @@ let fakeUser=new User ({
 let registeredUser=await User.register(fakeUser,"helloworld");
 res.send(registeredUser);
 });*/
-/*app.get("/", (req, res) => {
+app.get("/", (req, res) => {
   res.send("Wanderlust backend running");
-});*/
+});
 
 app.use("/listings",listingRouter);
 app.use("/listings/:id/reviews",reviewRouter);
@@ -114,9 +111,12 @@ app.use((req, res,next) => {
     return res.status(statusCode).render("listings/error",{message});
 });*/
 app.use((err, req, res, next) => {
+  if (res.headersSent) {
+    return next(err);
+  }
   const { statusCode = 500, message = "Something went wrong" } = err;
   console.log("🔥 ERROR:", err);
-  res.status(statusCode).render("listings/error", { message,success:[],error:[]});
+  res.status(statusCode).render("listings/error", { message, success: [], error: [] });
 });
 app.listen(8080,()=>{
     console.log("Server is running on port 8080");
