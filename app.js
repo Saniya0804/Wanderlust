@@ -70,34 +70,41 @@ passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
 app.use((req,res,next)=>{
-res.locals.success=req.flash("success");
-res.locals.error=req.flash("error");
+res.locals.success=req.flash("success")||[];
+res.locals.error=req.flash("error")||[];
 res.locals.currUser=req.user;
 next();
 });
 
-app.get("/demouser",async (req,res)=>{
+/*app.get("/demouser",async (req,res)=>{
 let fakeUser=new User ({
     email:"student@gmail.com",
     username:"delta-student"
 });
 let registeredUser=await User.register(fakeUser,"helloworld");
 res.send(registeredUser);
+});*/
+app.get("/", (req, res) => {
+  res.send("Wanderlust backend running");
 });
 
 app.use("/listings",listingRouter);
 app.use("/listings/:id/reviews",reviewRouter);
 app.use("/",userRouter);
 
+app.use((req, res,next) => {
+  next(new ExpressError(404,"page not found"));
+});
+
 /*app.get("/",wrapAsync((req,res)=>{
     res.send("Hello I am root!");
 }));*/
 
 /*if by mistake user enter a invalid or random route*/
-app.use((req,res,next)=>{
+/*app.use((req,res,next)=>{
     next(new ExpressError(404,"page not found"));
-});
-app.use((err,req,res,next)=>{
+});*/
+/*app.use((err,req,res,next)=>{
     if(res.headersSent)
         return next(err);
     console.log("🔥 ERROR NAME:", err.name);
@@ -105,7 +112,15 @@ app.use((err,req,res,next)=>{
     console.log("🔥 ERROR STACK:", err.stack);
     let {statusCode=500,message="something went wrong"}=err;
     return res.status(statusCode).render("listings/error",{message});
+});*/
+app.use((err, req, res, next) => {
+  const { statusCode = 500, message = "Something went wrong" } = err;
+  console.log("🔥 ERROR:", err);
+  res.status(statusCode).render("listings/error", { message });
 });
 app.listen(8080,()=>{
     console.log("Server is running on port 8080");
 });
+
+
+
