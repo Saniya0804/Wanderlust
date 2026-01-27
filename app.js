@@ -84,9 +84,9 @@ let fakeUser=new User ({
 let registeredUser=await User.register(fakeUser,"helloworld");
 res.send(registeredUser);
 });*/
-app.get("/", (req, res) => {
+/*app.get("/", (req, res) => {
   res.send("Wanderlust backend running");
-});
+});*/
 
 app.use("/listings",listingRouter);
 app.use("/listings/:id/reviews",reviewRouter);
