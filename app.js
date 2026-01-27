@@ -82,7 +82,7 @@ let registeredUser=await User.register(fakeUser,"helloworld");
 res.send(registeredUser);
 });*/
 app.get("/", (req, res) => {
-  res.send("Wanderlust backend running");
+  res.redirect("/listings");
 });
 
 app.use("/listings",listingRouter);
