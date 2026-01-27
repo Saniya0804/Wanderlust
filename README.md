@@ -2,7 +2,10 @@
 
 **_Wanderlust_** is a **full-stack web application** for travel enthusiasts to **discover, share, and review places to stay**.  
 Built using **Node.js, Express, MongoDB, and EJS**, the platform supports **user authentication, image uploads, reviews, and a responsive UI**.
+---
 
+🔗 **Live Demo:** 
+https://major-project-f9p9.onrender.com
 ---
 
 ## ✨ **Features**
@@ -97,9 +100,14 @@ npm install
 3️⃣ Set up environment variables
 
 Create a .env file in the root directory and add:
+NODE_ENV=development
+ATLASDB_URL=your_mongodb_atlas_connection_string
+SESSION_SECRET=your_secret_key
+
 CLOUDINARY_CLOUD_NAME=your_cloud_name
 CLOUDINARY_API_KEY=your_api_key
 CLOUDINARY_API_SECRET=your_api_secret
+
 4️⃣ Start MongoDB
 
 Start MongoDB locally
